@@ -1,0 +1,6 @@
+@AchievoAPI_HostAddress = http://localhost:5159
+
+GET {{AchievoAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
