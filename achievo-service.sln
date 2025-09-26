@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchievoAPI", "AchievoAPI\AchievoAPI.csproj", "{A787741A-6E73-487F-A9BE-6A0391FFF68A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Achievo.Infrastructure", "Achievo.Infrastructure\Achievo.Infrastructure.csproj", "{148E1511-1CF5-4FE1-A2C1-9DB7F1FD4EF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Achievo.Infrastructure.Models", "Achievo.Infrastructure.Models\Achievo.Infrastructure.Models.csproj", "{0A75F3BD-099F-4234-93A8-BFC592606A5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{A787741A-6E73-487F-A9BE-6A0391FFF68A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A787741A-6E73-487F-A9BE-6A0391FFF68A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A787741A-6E73-487F-A9BE-6A0391FFF68A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{148E1511-1CF5-4FE1-A2C1-9DB7F1FD4EF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148E1511-1CF5-4FE1-A2C1-9DB7F1FD4EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148E1511-1CF5-4FE1-A2C1-9DB7F1FD4EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148E1511-1CF5-4FE1-A2C1-9DB7F1FD4EF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A75F3BD-099F-4234-93A8-BFC592606A5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A75F3BD-099F-4234-93A8-BFC592606A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A75F3BD-099F-4234-93A8-BFC592606A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A75F3BD-099F-4234-93A8-BFC592606A5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
