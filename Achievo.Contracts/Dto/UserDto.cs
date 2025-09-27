@@ -1,6 +1,6 @@
 using System;
 
-namespace AchievoAPI.Dtos;
+namespace Achievo.Contracts.Dto;
 
 public class UserDto
 {

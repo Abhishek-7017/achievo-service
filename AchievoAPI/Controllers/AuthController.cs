@@ -1,12 +1,10 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using System.Threading.Tasks;
+using Achievo.Contracts.Dto;
 using Achievo.Infrastructure.Models.Models;
-using AchievoAPI.Dtos;
-using Microsoft.AspNetCore.Http;
+using Achievo.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AchievoAPI.Controllers
 {
@@ -14,58 +12,60 @@ namespace AchievoAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public AuthController(IConfiguration configuration)
+        public AuthController(IAuthService authService)
         {
-            _configuration = configuration;
+            _authService = authService;
         }
-        private IConfiguration _configuration;
-        public static User user = new();
+        private IAuthService _authService;
 
         [HttpPost("register")]
-        public ActionResult<User> Register(UserDto request)
+        public async Task<ActionResult<User>> Register(UserDto request)
         {
-            var hashedPassword = new PasswordHasher<User>().HashPassword(user, request.Password);
+            var user = await _authService.RegisterUserAsync(request);
 
-            user.UserName = request.UserName;
-            user.PasswordHash = hashedPassword;
+            if (user is null)
+            {
+                return BadRequest("User Already Exists..");
+            }
 
             return Ok(user);
         }
 
         [HttpPost("login")]
-        public ActionResult<string> Login(UserDto request)
+        public async Task<ActionResult<TokenResponseDto>> Login(UserDto request)
         {
-            if (user.UserName != request.UserName)
+            var response = await _authService.LoginUserAsync(request);
+
+            if (response is null)
             {
-                return BadRequest("User not found");
+                return BadRequest("User Name or Password is incorrect");
             }
-            if (new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password) == PasswordVerificationResult.Failed)
-            {
-                return BadRequest("Wrong Password.");
-            }
-            string token = CreateToken(user);
-            return Ok(token);
+
+            return Ok(response);
         }
-        private string CreateToken(User user)
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<TokenResponseDto>> RefreshToken(RefreshTokenRequestDto request)
         {
-            var claims = new List<Claim>
+            var response = await _authService.RefreshTokensAsync(request);
+
+            if (response is null || response.AccessToken is null || response.RefreshToken is null)
             {
-                new Claim(ClaimTypes.Name,user.UserName)
-            };
+                return BadRequest("Invalid RefreshToken...");
+            }
+            return Ok(response);
+        }
 
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_configuration["AppSettings:Token"]!));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-
-            var tokenDescriptor = new JwtSecurityToken(
-                issuer: _configuration["AppSettings:Issuer"],
-                audience: _configuration["AppSettings:Audiennce"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddDays(1),
-                signingCredentials: creds
-            );
-            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+        [Authorize]
+        [HttpGet]
+        public IActionResult AuthenticateOnlyEndPoint()
+        {
+            return Ok("you are authenticated1");
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin-only")]
+        public IActionResult AdminAuth()
+        {
+            return Ok("you are a Admin");
         }
     }
 }

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.*" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,8 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../Achievo.Contracts/Achievo.Contracts.csproj" />
     <ProjectReference Include="../Achievo.Infrastructure.Models/Achievo.Infrastructure.Models.csproj" />
     <ProjectReference Include="../Achievo.Infrastructure/Achievo.Infrastructure.csproj" />
+    <ProjectReference Include="../Achievo.Services/Achievo.Services.csproj" />
   </ItemGroup>
 
 </Project>
