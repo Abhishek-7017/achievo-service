@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Achievo.Infrastructure.Migrations
 {
-    [DbContext(typeof(UserDbContext))]
+    [DbContext(typeof(AchievoDbContext))]
     [Migration("20250927170454_AddNewChanges")]
     partial class AddNewChanges
     {

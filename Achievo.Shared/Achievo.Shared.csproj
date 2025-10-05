@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="../Achievo.Shared/Achievo.Shared.csproj" />
-  </ItemGroup>
-
 </Project>

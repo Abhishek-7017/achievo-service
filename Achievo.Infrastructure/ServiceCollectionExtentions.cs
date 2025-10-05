@@ -11,7 +11,7 @@ public static class ServiceCollectionExtentions
     public static IServiceCollection AddAchievoInfrastructureDbContext(
             this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<UserDbContext>(options =>
+            services.AddDbContext<AchievoDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             return services;

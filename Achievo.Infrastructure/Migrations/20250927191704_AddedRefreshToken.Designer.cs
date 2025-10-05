@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Achievo.Infrastructure.Migrations
 {
-    [DbContext(typeof(UserDbContext))]
+    [DbContext(typeof(AchievoDbContext))]
     [Migration("20250927191704_AddedRefreshToken")]
     partial class AddedRefreshToken
     {

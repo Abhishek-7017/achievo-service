@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Achievo.Infrastructure.Migrations
 {
-    [DbContext(typeof(UserDbContext))]
+    [DbContext(typeof(AchievoDbContext))]
     [Migration("20250926204239_InitialCreate")]
     partial class InitialCreate
     {

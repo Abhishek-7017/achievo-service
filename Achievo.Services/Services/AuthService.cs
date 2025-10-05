@@ -16,12 +16,12 @@ namespace Achievo.Services.Services;
 
 public class AuthService : IAuthService
 {
-    public AuthService(UserDbContext userDbContext, IConfiguration configuration)
+    public AuthService(AchievoDbContext userDbContext, IConfiguration configuration)
     {
         _userDbContext = userDbContext;
         _configuration = configuration;
     }
-    private UserDbContext _userDbContext;
+    private AchievoDbContext _userDbContext;
     private IConfiguration _configuration;
 
     public async Task<TokenResponseDto?> LoginUserAsync(UserDto request)
@@ -54,11 +54,17 @@ public class AuthService : IAuthService
             return null;
         }
 
-        User user = new User();
+        User user = new User
+        {
+            DisplayName = request.UserName,
+            JoiningDate = DateTime.Today
+        };
+
         var hashedPassword = new PasswordHasher<User>().HashPassword(user, request.Password);
 
         user.UserName = request.UserName;
         user.PasswordHash = hashedPassword;
+        
 
         _userDbContext.Add(user);
         await _userDbContext.SaveChangesAsync();
@@ -108,11 +114,17 @@ public class AuthService : IAuthService
     private string CreateToken(User user)
     {
         var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name,user.UserName),
+            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
+        };
+        if (user.Role != null && user.Role.Count > 0)
+        {    
+            foreach (string role in user.Role)
             {
-                new Claim(ClaimTypes.Name,user.UserName),
-                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-                new Claim(ClaimTypes.Role,user.Role)
-            };
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+        }
 
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_configuration["AppSettings:Token"]!));
