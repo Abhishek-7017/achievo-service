@@ -32,7 +32,7 @@ namespace AchievoAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<TokenResponseDto>> Login(UserDto request)
+        public async Task<ActionResult<TokenResponseDto>> Login([FromBody] UserDto request)
         {
             var response = await _authService.LoginUserAsync(request);
 

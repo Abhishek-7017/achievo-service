@@ -15,7 +15,6 @@ public class User
     public bool IsActive { get; set; }
     public int TotalPoints { get; set; }
     public List<string>? Role { get; set; }
-    public List<Reference>? AssignedTasks { get; set; }
     public string? RefreshToken { get; set; }
     public DateTime? RefreshTokenExpiryTime { get; set; }
 }

@@ -30,20 +30,14 @@ public class UserService : IUserService
         return userDtos;
     }
 
-    public async Task<UserDto?> GetUserById(Guid Id)
+    public async Task<User?> GetUserById(Guid Id)
     {
         var user = await _achievoDbContext.Users.FindAsync(Id);
         if (user is null) {
             return null;
         }
 
-        UserDto userDto = new UserDto
-        {
-            UserName = user.UserName,
-            Password = user.PasswordHash
-        };
-
-        return userDto;
+        return user;
     }
 
     public async Task<UserDto?> UpdateUser(UserDto request)
@@ -59,5 +53,21 @@ public class UserService : IUserService
         await _achievoDbContext.SaveChangesAsync();
 
         return new UserDto { UserName = user.UserName, Password = user.PasswordHash };
+    }
+
+    public async Task<UserDto?> GetUserDtoById(Guid Id)
+    {
+        User? user = await _achievoDbContext.Users.FindAsync(Id);
+        if (user is null)
+        {
+            return null;
+        }
+        UserDto userDto = new UserDto
+        {
+            UserName = user.UserName,
+            Password = user.PasswordHash
+        };
+        
+        return userDto;
     }
 }

@@ -1,9 +1,11 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace Achievo.Shared;
 
+[Owned]
 public class Reference
 {
-    public required Guid Id { get; set; }
-    public required string Name { get; set; }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
 }

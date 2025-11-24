@@ -29,7 +29,7 @@ namespace AchievoAPI.Controllers
         [HttpGet("userById")]
         public async Task<ActionResult<UserDto>> GetUserById(Guid id)
         {
-            UserDto? user = await _userService.GetUserById(id);
+            UserDto? user = await _userService.GetUserDtoById(id);
 
             if (user is null)
             {
@@ -40,7 +40,7 @@ namespace AchievoAPI.Controllers
         }
 
         [Authorize]
-        [HttpPut("udateDetails")]
+        [HttpPut("updateDetails")]
         public async Task<ActionResult<UserDto>> UpdateUserDetails(UserDto request)
         {
             UserDto? response = await _userService.UpdateUser(request);
