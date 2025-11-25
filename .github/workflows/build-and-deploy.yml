@@ -32,9 +32,12 @@ jobs:
     - name: Publish .NET App
       run: dotnet publish AchievoAPI/AchievoAPI.csproj -c Release -o publish
 
+    - name: Zip publish folder
+      run: zip -r publish.zip publish
+
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v3
       with:
         app-name: AchievoWApp
         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-        package: ./publish
+        package: publish.zip
