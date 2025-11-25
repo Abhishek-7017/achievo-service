@@ -95,13 +95,13 @@ public class TaskService : ITaskService
             Name = taskTemplate.Title
         };
 
-        UserTask newUserTask = new UserTask(userTaskDto.Title,userTaskDto.Description,tempelateRef);
-        newUserTask.AssignedAt = userTaskDto.AssignedAt;
-        newUserTask.DueAt = userTaskDto.DueAt;
-        newUserTask.Status = userTaskDto.Status;
+        // UserTask newUserTask = new UserTask(userTaskDto.Title,userTaskDto.Description,tempelateRef);
+        // newUserTask.AssignedAt = userTaskDto.AssignedAt;
+        // newUserTask.DueAt = userTaskDto.DueAt;
+        // newUserTask.Status = userTaskDto.Status;
 
-        _achevoDbContext.UserTasks.Add(newUserTask);
-        await _achevoDbContext.SaveChangesAsync();
+        // _achevoDbContext.UserTasks.Add(newUserTask);
+        // await _achevoDbContext.SaveChangesAsync();
 
         return userTaskDto;
     }
