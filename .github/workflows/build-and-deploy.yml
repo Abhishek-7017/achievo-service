@@ -4,42 +4,64 @@ on:
   push:
     branches: ["master"]
 
+env:
+  AZURE_WEBAPP_NAME: AchievoWApp
+  AZURE_WEBAPP_PACKAGE_PATH: "./Achievo.Api/publish"
+  DOTNET_VERSION: "8.0.x"
+  SOLUTION_PATH: "achievo-service.sln"
+  API_PROJECT_PATH: "AchievoAPI"
+  PUBLISH_DIR: "./publish"
+
 jobs:
-  build:
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
     
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.SOLUTION_PATH }}
+
     - name: Update connection string in appsettings.json
       run: |
         sed -i 's|CONNECTION_STRING_PLACEHOLDER|${{ secrets.AZURE_SQL_CONNECTION }}|g' AchievoAPI/appsettings.json
     
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    
-    - name: Restore dependencies
-      run: dotnet restore
-    
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
     
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build --verbosity normal
 
     - name: Publish .NET App
-      run: dotnet publish AchievoAPI/AchievoAPI.csproj -c Release -o ./publish
+      run: dotnet publish ${{ env.API_PROJECT_PATH }} --configuration Release --no-restore --no-build --property:PublishDir=${{ env.PUBLISH_DIR}}
 
-    - name: Zip publish output correctly
-      run: |
-        cd publish
-        zip -r ../app.zip .
-
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v3
+    - name: Publish Artifacts
+      uses: actions/upload-artifact@v4
       with:
-        app-name: AchievoWApp
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-        package: app.zip
+        name: webapp
+        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+  deploy:
+    name: Deploy to Azure
+    runs-on: ubuntu-latest
+    needs: [build-and-test]
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: webapp
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  
+      - name: Deploy
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
