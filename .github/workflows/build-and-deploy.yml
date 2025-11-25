@@ -13,7 +13,7 @@ jobs:
     
     - name: Update connection string in appsettings.json
       run: |
-        sed -i 's|CONNECTION_STRING_PLACEHOLDER|${{ secrets.AZURE_SQL_CONNECTION }}|g' appsettings.json
+        sed -i 's|CONNECTION_STRING_PLACEHOLDER|${{ secrets.AZURE_SQL_CONNECTION }}|g' AchievoAPI/appsettings.json
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
