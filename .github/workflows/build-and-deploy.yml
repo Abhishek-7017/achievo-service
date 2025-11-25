@@ -30,14 +30,16 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
     - name: Publish .NET App
-      run: dotnet publish AchievoAPI/AchievoAPI.csproj -c Release -o publish
+      run: dotnet publish AchievoAPI/AchievoAPI.csproj -c Release -o ./publish
 
-    - name: Zip publish folder
-      run: zip -r publish.zip publish
+    - name: Zip publish output correctly
+      run: |
+        cd publish
+        zip -r ../app.zip .
 
-    - name: 'Deploy to Azure Web App'
+    - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
         app-name: AchievoWApp
         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-        package: publish.zip
+        package: app.zip
