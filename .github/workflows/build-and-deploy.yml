@@ -30,7 +30,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
     - name: Publish .NET App
-      run: dotnet publish -c Release -o publish
+      run: dotnet publish AchievoAPI/AchievoAPI.csproj -c Release -o publish
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v3
