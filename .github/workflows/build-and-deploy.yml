@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Update connection string in appsetting.json
+      run: |
+        sed -i 's|CONNECTION_STRING_PLACEHOLDER|${{ secrets.AZURE_SQL_CONNECTION }}|g' appsettings.json
     - uses: actions/checkout@v4
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
