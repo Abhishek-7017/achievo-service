@@ -27,10 +27,6 @@ jobs:
     
     - name: Restore dependencies
       run: dotnet restore ${{ env.SOLUTION_PATH }}
-
-    - name: Update connection string in appsettings.json
-      run: |
-        sed -i 's|CONNECTION_STRING_PLACEHOLDER|${{ secrets.AZURE_SQL_CONNECTION }}|g' AchievoAPI/appsettings.json
     
     - name: Build
       run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
