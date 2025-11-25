@@ -5,7 +5,7 @@ on:
     branches: ["master"]
 
 env:
-  AZURE_WEBAPP_NAME: AchievoWApp
+  AZURE_WEBAPP_NAME: achievowapp
   AZURE_WEBAPP_PACKAGE_PATH: "./Achievo.Api/publish"
   DOTNET_VERSION: "8.0.x"
   SOLUTION_PATH: "achievo-service.sln"
