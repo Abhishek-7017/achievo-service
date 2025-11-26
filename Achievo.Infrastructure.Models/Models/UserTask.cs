@@ -6,13 +6,6 @@ namespace Achievo.Infrastructure.Models.Models;
 
 public class UserTask
 {
-    // [SetsRequiredMembers]
-    // public UserTask(string title, string description, Reference taskTemplate)
-    // {
-    //     Title = title;
-    //     Description = description;
-    //     TaskTemplate = taskTemplate;
-    // }
     public Guid Id { get; set; }
     public Reference AssignedUser { get; set; } = new Reference();
     public required Reference TaskTemplate { get; set; } = new Reference();

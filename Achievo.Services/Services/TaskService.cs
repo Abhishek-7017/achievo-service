@@ -76,12 +76,11 @@ public class TaskService : ITaskService
         return tsk;
     }
 
-    public async Task<UserTaskDto?>CreateTask(Guid templateId, UserTaskDto userTaskDto)
+    public async Task<UserTaskDto?>CreateTask(UserTaskDto userTaskDto)
     {
-        
-        if(userTaskDto is null ||Guid.Empty == templateId) return null;
+        if(userTaskDto is null ||Guid.Empty == userTaskDto.TemplateId) return null;
 
-        var taskTemplate = await _achevoDbContext.TaskTemplates.FindAsync(templateId);
+        var taskTemplate = await _achevoDbContext.TaskTemplates.FindAsync(userTaskDto.TemplateId);
 
         if(taskTemplate is null) return null;
 
@@ -95,24 +94,49 @@ public class TaskService : ITaskService
             Name = taskTemplate.Title
         };
 
-        // UserTask newUserTask = new UserTask(userTaskDto.Title,userTaskDto.Description,tempelateRef);
-        // newUserTask.AssignedAt = userTaskDto.AssignedAt;
-        // newUserTask.DueAt = userTaskDto.DueAt;
-        // newUserTask.Status = userTaskDto.Status;
+        UserTask newUserTask = new UserTask{
+            Title = userTaskDto.Title,
+            Description = userTaskDto.Description,
+            TaskTemplate = tempelateRef
+        };
+        newUserTask.AssignedAt = userTaskDto.AssignedAt;
+        newUserTask.DueAt = userTaskDto.DueAt;
+        newUserTask.Status = userTaskDto.Status;
 
-        // _achevoDbContext.UserTasks.Add(newUserTask);
-        // await _achevoDbContext.SaveChangesAsync();
+        _achevoDbContext.UserTasks.Add(newUserTask);
+        await _achevoDbContext.SaveChangesAsync();
 
         return userTaskDto;
     }
 
-    public UserTaskDto UpdateStatusOfTask(UserTaskDto userTask, string status)
+    public async Task<UserTaskDto?> UpdateStatusOfTask(UserTaskDto userTaskDto, string status)
     {
-        throw new NotImplementedException();
+        if(userTaskDto is null) return null;
+
+        var userTask = await _achevoDbContext.UserTasks.FindAsync(userTaskDto.Title);
+        if(userTask is null) return null;
+
+        userTask.Status = status;
+
+        _achevoDbContext.UserTasks.Update(userTask);
+        await _achevoDbContext.SaveChangesAsync();
+
+        return userTaskDto;
     }
 
-    public UserTaskDto UpdateUserTask(UserTaskDto userTask)
+    public async Task<UserTaskDto?> UpdateUserTask(UserTaskDto userTaskDto)
     {
-        throw new NotImplementedException();
+        if(userTaskDto is null) return null;
+
+        var userTask = await _achevoDbContext.UserTasks.FindAsync(userTaskDto.Title);
+        if(userTask is null) return null;
+
+        userTask.Title = userTaskDto.Title;
+        userTask.Description = userTaskDto.Description;
+        userTask.AssignedAt = userTaskDto.AssignedAt;
+        userTask.DueAt = userTaskDto.DueAt;
+        userTask.Status = userTaskDto.Status;
+
+        return userTaskDto;
     }
 }

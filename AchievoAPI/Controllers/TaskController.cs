@@ -22,23 +22,29 @@ namespace AchievoAPI.Controllers
         [HttpPost("createtemplate")]
         public ActionResult<TaskTemplateDto> CreateTaskTemplate(TaskTemplateDto taskTemplateDto)
         {
-            var taskTemplate = _taskService.CreateTaskTemplate(taskTemplateDto);
-            if (taskTemplate is null) return NotFound();
-            return Ok(taskTemplate);
+            try
+            {    
+                var taskTemplate = _taskService.CreateTaskTemplate(taskTemplateDto);
+                if (taskTemplate is null) return NotFound();
+                return Ok(taskTemplate);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [Authorize]
         [HttpPost("createtask")]
-        public ActionResult<UserTaskDto> CreateTask(Guid templateId, UserTaskDto userTaskDto)
+        public ActionResult<UserTaskDto> CreateTask(UserTaskDto userTaskDto)
         {
             try
             {
-                var userTask = _taskService.CreateTask(templateId,userTaskDto);
+                var userTask = _taskService.CreateTask(userTaskDto);
                 if(userTask is not null) return Ok(userTask);
                 else return NotFound();
             }catch(Exception ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
         }
 
@@ -53,7 +59,7 @@ namespace AchievoAPI.Controllers
                 else return NotFound();
             }catch(Exception ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
         }
         
@@ -68,7 +74,7 @@ namespace AchievoAPI.Controllers
                 else return NotFound();
             }catch(Exception ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
         }
 

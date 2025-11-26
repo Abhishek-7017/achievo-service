@@ -6,9 +6,9 @@ namespace Achievo.Services.Interfaces;
 
 public interface ITaskService
 {
-    Task<UserTaskDto?> CreateTask(Guid templateId,UserTaskDto userTaskDto);
-    UserTaskDto UpdateUserTask(UserTaskDto userTask);
-    UserTaskDto UpdateStatusOfTask(UserTaskDto userTask, string status);
+    Task<UserTaskDto?> CreateTask(UserTaskDto userTaskDto);
+    Task<UserTaskDto?> UpdateUserTask(UserTaskDto userTask);
+    Task<UserTaskDto?> UpdateStatusOfTask(UserTaskDto userTask, string status);
     Task<UserTask?> AssignTask(UserTaskDto userTask, Guid userId);
     TaskTemplateDto? CreateTaskTemplate(TaskTemplateDto taskTemplateDto);
 }
