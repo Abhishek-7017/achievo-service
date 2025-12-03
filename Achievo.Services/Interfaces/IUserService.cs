@@ -9,5 +9,5 @@ public interface IUserService
     public Task<UserDto?> UpdateUser(UserDto userDto);
     public List<UserDto> GetAllUsers();
     public Task<User?> GetUserById(Guid Id);
-    public Task<UserDto?> GetUserDtoById(Guid Id);
+    public Task<UserDetailsDto?> GetUserByUserName(string UserName);
 }

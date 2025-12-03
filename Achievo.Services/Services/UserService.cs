@@ -5,6 +5,7 @@ using Achievo.Infrastructure.DbContexts;
 using Achievo.Infrastructure.Models.Models;
 using Achievo.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Achievo.Services.Services;
 
@@ -55,19 +56,24 @@ public class UserService : IUserService
         return new UserDto { UserName = user.UserName, Password = user.PasswordHash };
     }
 
-    public async Task<UserDto?> GetUserDtoById(Guid Id)
+    public async Task<UserDetailsDto?> GetUserByUserName(string userName)
     {
-        User? user = await _achievoDbContext.Users.FindAsync(Id);
+        User? user = await _achievoDbContext.Users.FirstOrDefaultAsync(u=>u.UserName==userName);
         if (user is null)
         {
             return null;
         }
-        UserDto userDto = new UserDto
+        UserDetailsDto userDetailsDto = new UserDetailsDto
         {
             UserName = user.UserName,
-            Password = user.PasswordHash
+            DisplayName = user.DisplayName,
+            Email = user.Email,
+            JoiningDate = user.JoiningDate,
+            IsActive = user.IsActive,
+            Role = user.Role,
+            TotalPoints = user.TotalPoints
         };
-        
-        return userDto;
+
+        return userDetailsDto;
     }
 }

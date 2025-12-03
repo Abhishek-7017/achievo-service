@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Achievo.Contracts.Dto;
+using Achievo.Infrastructure.Models.Models;
 using Achievo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,10 +27,10 @@ namespace AchievoAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("userById")]
-        public async Task<ActionResult<UserDto>> GetUserById(Guid id)
+        [HttpGet("user")]
+        public async Task<ActionResult<UserDetailsDto?>> GetUserById(string userName)
         {
-            UserDto? user = await _userService.GetUserDtoById(id);
+            UserDetailsDto? user = await _userService.GetUserByUserName(userName);
 
             if (user is null)
             {
