@@ -16,20 +16,6 @@ public class UserService : IUserService
         _achievoDbContext = achievoDbContext;
     }
     private AchievoDbContext _achievoDbContext;
-    public List<UserDto> GetAllUsers()
-    {
-        List<User> users = _achievoDbContext.Users.ToList();
-        List<UserDto> userDtos = new List<UserDto>();
-        foreach (var user in users)
-        {
-            userDtos.Add(new UserDto
-            {
-                UserName = user.UserName,
-                Password = user.PasswordHash
-            });
-        }
-        return userDtos;
-    }
 
     public async Task<User?> GetUserById(Guid Id)
     {
@@ -41,19 +27,24 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<UserDto?> UpdateUser(UserDto request)
+    public async Task<UserDetailsDto?> UpdateUser(UserDetailsDto userDetailsDto)
     {
-        User? user = await _achievoDbContext.Users.FindAsync(request.UserName);
+        User? user = await _achievoDbContext.Users.FirstOrDefaultAsync(u=>u.UserName==userDetailsDto.UserName);
         if (user is null)
         {
             return null;
         }
-        user.PasswordHash = new PasswordHasher<User>().HashPassword(user, request.Password);
+        user.DisplayName = userDetailsDto.DisplayName;
+        user.Email = userDetailsDto.Email;
+        user.JoiningDate = userDetailsDto.JoiningDate;
+        user.Role = userDetailsDto.Role;
+        user.IsActive = userDetailsDto.IsActive;
+        user.TotalPoints = userDetailsDto.TotalPoints;
 
         _achievoDbContext.Users.Update(user);
         await _achievoDbContext.SaveChangesAsync();
 
-        return new UserDto { UserName = user.UserName, Password = user.PasswordHash };
+        return userDetailsDto;
     }
 
     public async Task<UserDetailsDto?> GetUserByUserName(string userName)

@@ -6,8 +6,7 @@ namespace Achievo.Services.Interfaces;
 
 public interface IUserService
 {
-    public Task<UserDto?> UpdateUser(UserDto userDto);
-    public List<UserDto> GetAllUsers();
+    public Task<UserDetailsDto?> UpdateUser(UserDetailsDto userDetailsDto);
     public Task<User?> GetUserById(Guid Id);
     public Task<UserDetailsDto?> GetUserByUserName(string UserName);
 }

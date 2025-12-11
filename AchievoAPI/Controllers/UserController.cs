@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AchievoAPI.Controllers
 {
-    [Route("api/users")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -19,16 +19,8 @@ namespace AchievoAPI.Controllers
         private IUserService _userService;
 
         [Authorize]
-        [HttpGet("allUsers")]
-        public ActionResult<List<UserDto>> GetAllUsers()
-        {
-            List<UserDto> users = _userService.GetAllUsers();
-            return Ok(users);
-        }
-
-        [Authorize]
-        [HttpGet("user")]
-        public async Task<ActionResult<UserDetailsDto?>> GetUserById(string userName)
+        [HttpGet]
+        public async Task<ActionResult<UserDetailsDto?>> GetUserByUserName(string userName)
         {
             UserDetailsDto? user = await _userService.GetUserByUserName(userName);
 
@@ -41,10 +33,10 @@ namespace AchievoAPI.Controllers
         }
 
         [Authorize]
-        [HttpPut("updateDetails")]
-        public async Task<ActionResult<UserDto>> UpdateUserDetails(UserDto request)
+        [HttpPut]
+        public async Task<ActionResult<UserDto>> UpdateUserDetails(UserDetailsDto request)
         {
-            UserDto? response = await _userService.UpdateUser(request);
+            UserDetailsDto? response = await _userService.UpdateUser(request);
 
             if (response is null)
             {
